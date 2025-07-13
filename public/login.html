@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>تسجيل الدخول الموحد</title>
+</head>
+<body>
+    <form id="loginForm">
+        <input type="text" id="username" placeholder="اسم المستخدم" />
+        <input type="password" id="password" placeholder="كلمة المرور" />
+        
+        <label for="rememberMe">
+          <input type="checkbox" id="rememberMe" />
+          تذكرني
+        </label>
+        <br>
+        <button id="loginBtn" type="submit">تسجيل الدخول</button>
+      </form>
+      
+      <a href="https://sso.satr.codes/auth/realms/main/login-actions/reset-credentials" id="forgotPassword">هل نسيت كلمة المرور؟</a>
+      <br>
+      <a href="https://register.satr.codes/?client_id=dashboard&redirect_uri=null" id="signupLink">ليس لديك حساب؟ إنشاء حساب</a>
+      
+      <div id="errorMessage"></div>
+
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const errorBox = document.getElementById('errorMessage');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      if (!username) {
+        errorBox.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة';
+      } else if (!password) {
+        errorBox.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة';
+      } else if (username === 'validUser' && password === 'validPass') {
+        window.location.href = 'https://satr.codes/';
+      } else {
+        errorBox.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة';
+      }
+    });
+  </script>
+</body>
+</html>

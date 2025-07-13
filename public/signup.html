@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>إنشاء حساب موحد</title>
+</head>
+<body>
+  <h1>إنشاء حساب موحد
+</h1>
+
+<form id="signupForm">
+    <input type="text" id="firstName" placeholder="الاسم الأول" /><br />
+    <input type="text" id="lastName" placeholder="الاسم الأخير"    /><br />
+    <input type="email" id="email" placeholder="البريد الإلكتروني" /><br />
+
+     
+    <select id="phoneCode">
+      <option value="+966">+966 🇸🇦 السعودية</option>
+      <option value="+971">+971 🇦🇪 الإمارات</option>
+      <option value="+965">+965 🇰🇼 الكويت</option>
+      <option value="+20">+20 🇪🇬 مصر</option>
+      <option value="+1">+1 🇺🇸 أمريكا</option>
+    </select>
+  
+    <input type="text" id="phone" placeholder="رقم الجوال" /><br />
+
+    <input type="text" id="username" placeholder="اسم المستخدم" /><br />
+  
+  
+    <input type="password" id="password" placeholder="كلمة المرور" /><br />
+    <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور" /><br />
+    <button type="submit" id="signupBtn">إنشاء حساب</button>
+  </form>
+  
+  <a href="https://sso.safcsp.cloud/auth/realms/main/protocol/openid-connect/auth" id="loginLink">لديك حساب؟ تسجيل دخول</a>
+  <div id="signupMessage"></div>
+
+
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+  
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phoneCode = document.getElementById('phoneCode').value;
+      const phone = document.getElementById('phone').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const msg = document.getElementById('signupMessage');
+  
+      // إعادة تعيين الرسالة في كل محاولة
+      msg.textContent = '';
+  
+      // === التحققات ===
+  
+      // الاسم الأول والاسم الأخير - حرفين على الأقل
+      if (firstName.length < 2) {
+        msg.textContent = 'الاسم الأول يجب أن يحتوي على حرفين على الأقل';
+        return;
+      }
+      if (lastName.length < 2) {
+        msg.textContent = 'اسم العائلة يجب أن يحتوي على حرفين على الأقل';
+        return;
+      }
+  
+      // التحقق من صيغة البريد الإلكتروني 
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        msg.textContent = 'صيغة البريد الإلكتروني غير صحيحة';
+        return;
+      }
+  
+      // اسم المستخدم: 4-20 خانة، يسمح فقط بـ - . _ ، لا يحتوي مسافات، لا يبدأ برقم
+      const usernameRegex = /^(?!\d)[a-zA-Z0-9._-]{4,20}$/;
+      if (!usernameRegex.test(username)) {
+        msg.textContent = 'اسم المستخدم يجب أن يكون من 4 إلى 20 خانة، لا يبدأ برقم، ويقبل فقط الأحرف، الأرقام، - . _ ولا يحتوي مسافات';
+        return;
+      }
+  
+      // كلمة المرور: على الأقل 8 خانات، تحتوي على رمز خاص، رقم، حرف كبير وصغير على الأقل
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      if (!passwordRegex.test(password)) {
+        msg.textContent = 'كلمة المرور يجب أن تحتوي على 8 خانات على الأقل، حرف كبير، حرف صغير، رقم، ورمز خاص واحد على الأقل (@ $ ! % * ? &)';
+        return;
+      }
+  
+      // التأكد من تطابق كلمتي المرور
+      if (password !== confirmPassword) {
+        msg.textContent = 'يجب أن تكون كلمة المرور متطابقة';
+        return;
+      }
+  
+      // التأكد من أن باقي الحقول ليست فارغة (رقم الجوال على سبيل المثال)
+      if (!phone) {
+        msg.textContent = 'حقل الزامي';
+        return;
+      }
+  
+      // إذا كل شيء صحيح:
+      const fullName = `${firstName} ${lastName}`;
+      const fullPhone = `${phoneCode}${phone}`;
+   // console.log
+      console.log('الاسم الكامل:', fullName);
+      console.log('رقم الجوال الكامل:', fullPhone);
+  
+      msg.textContent = 'تم إنشاء الحساب بنجاح';
+    });
+  </script>
+  </body>
+</html>
